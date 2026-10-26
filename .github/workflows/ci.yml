@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+
+  # schedule:
+  #   - cron: "0 6 * * *"
+  #
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run lint
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run typecheck
+
+  test:
+    needs: [lint, typecheck]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run test
+
+  live-test:
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    env:
+      BASE_URL: ${{ secrets.BASE_URL }}
+      TOKEN_URL: ${{ secrets.TOKEN_URL }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+      SCOPE: ${{ secrets.SCOPE }}
+      ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+      SERVICE_ENV: ${{ secrets.SERVICE_ENV }}
+      TRANSACTION_ID: ${{ secrets.TRANSACTION_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run test:live

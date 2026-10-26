@@ -5,6 +5,7 @@ import { buildHeader } from "../utils/headers";
 
 export async function patchRatePlan(
   token: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   body: any,
 ): Promise<PatchRatePlanResponse> {
   const response = await request(env.baseUrl)

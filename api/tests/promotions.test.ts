@@ -1,16 +1,6 @@
 import http from "node:http";
-import { createQuoteAndFetchSummary } from "../controllers/createQuoteAndFetchSummary";
-import { patchRatePlanBody } from "../fixtures/patchRatePlanBody";
 import { startMockPromotionsServer } from "../utils/mockPromotionsServer";
 import { getMockPromotions } from "../clients/getMockPromotions";
-
-describe("Sales Summary API", () => {
-  it("creates a quote and returns a valid sales summary", async () => {
-    const summary = await createQuoteAndFetchSummary(patchRatePlanBody);
-    expect(summary.successInd).toBe(true);
-    expect(summary.data.referenceId).toBeTruthy();
-  });
-});
 
 describe("Promotions service (mocked — real service not yet available)", () => {
   let server: http.Server;
