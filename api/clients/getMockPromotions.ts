@@ -5,8 +5,12 @@ import request from "supertest";
 // — this function's shape, the test, and the assertions all stay identical.
 export async function getMockPromotions(
   baseUrl: string,
-  region: string,
-): Promise<{ status: number; body: { found?: boolean; discountPercent?: number } }> {
-  const response = await request(baseUrl).get(`/promotions?region=${region}`);
+  region?: string,
+): Promise<{
+  status: number;
+  body: { found?: boolean; discountPercent?: number; message?: string };
+}> {
+  const path = region ? `/promotions?region=${region}` : "/promotions";
+  const response = await request(baseUrl).get(path);
   return { status: response.status, body: response.body };
 }

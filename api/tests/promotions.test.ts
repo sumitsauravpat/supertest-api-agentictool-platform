@@ -33,4 +33,10 @@ describe("Promotions service (mocked — real service not yet available)", () =>
     const result = await getMockPromotions(mockUrl, "ServerError");
     expect(result.status).toBe(500);
   });
+
+  it("rejects a request missing the region param — SCRUM-1", async () => {
+    const result = await getMockPromotions(mockUrl);
+    expect(result.status).toBe(400);
+    expect(result.body.message).toBe("region is required");
+  });
 });

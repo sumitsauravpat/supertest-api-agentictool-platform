@@ -15,6 +15,14 @@ export function startMockPromotionsServer(): Promise<{
 
       res.setHeader("Content-Type", "application/json");
 
+      // SCRUM-1 — a missing region is a bad REQUEST, not "no promotion found".
+      // Checked first, before any business logic below.
+      if (!region) {
+        res.writeHead(400);
+        res.end(JSON.stringify({ message: "region is required" }));
+        return;
+      }
+
       if (region === "Ontario") {
         res.writeHead(200);
         res.end(JSON.stringify({ found: true, discountPercent: 15 }));
