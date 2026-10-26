@@ -1,0 +1,73 @@
+openapi: 3.0.0
+info:
+  title: Sales Summary API (documented from our real clients)
+  version: 1.0.0
+  description: >
+    Hand-authored OpenAPI spec documenting the real endpoints this project's
+    Supertest clients actually call — built from our own proven types
+    (PatchRatePlanResponse, ResponseDetailsResponse), not a fabricated example.
+
+paths:
+  /salesSummary/0/ratePlan:
+    patch:
+      summary: Creates a new quote (patches a rate plan onto it)
+      responses:
+        "200":
+          description: Quote successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  successInd:
+                    type: boolean
+                  status:
+                    type: number
+                  data:
+                    type: object
+                    properties:
+                      referenceId:
+                        type: string
+
+  /salesSummary/{quoteId}:
+    get:
+      summary: Fetch the full sales summary for an existing quote
+      parameters:
+        - name: quoteId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  successInd:
+                    type: boolean
+                  status:
+                    type: number
+                  data:
+                    type: object
+                    properties:
+                      referenceId:
+                        type: string
+                      planSummary:
+                        type: object
+                        properties:
+                          state:
+                            type: string
+                          planSummaryItems:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                quoteItemId:
+                                  type: string
+                                dueTodayAmount:
+                                  type: number
+                                dueMonthlyAmount:
+                                  type: number
